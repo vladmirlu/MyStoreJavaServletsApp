@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Basket</title>
+    <!-- Load the scripts needed for the application. -->
+    <link rel="stylesheet" href="/components/shop/shop.css"/>
+    <script type="text/javascript" src="../../lib/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/components/shop/shop.js"></script>
+</head>
+<body onload="onBasketLoad()">
+<h1>Basket</h1>
+<div>
+    <table>
+        <caption>Items to buy</caption>
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Vendor code</th>
+            <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody id="basket"></tbody>
+    </table>
+    <div><br/>
+        <button onclick="goBack()" onfocus="this.blur()" class="square_btn">Go Back</button>
+        <button onclick="buy()" onfocus="this.blur()" class="square_btn">Buy</button>
+    </div>
+</div>
+</body>
+</html>
