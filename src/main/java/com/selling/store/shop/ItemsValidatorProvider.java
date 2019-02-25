@@ -8,12 +8,11 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,13 +31,34 @@ public class ItemsValidatorProvider {
     private List<Item> items;
 
     /**
+     * Object to get data from the application properties file
+     */
+    private ResourceBundle resourceBundle;
+
+    /**
+     * Build new file provider and create resource bundle from the properties file
+     */
+    public ItemsValidatorProvider() {
+        String resourcesPath = "src/main/resources/application.properties";
+        try {
+            this.resourceBundle = new PropertyResourceBundle(new FileInputStream(resourcesPath));
+        } catch (MissingResourceException m) {
+            m.printStackTrace();
+            logger.error("Resource is missing: " + resourcesPath + "MissingResourceException occur: " + m.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            logger.error("IOException occur during reading resources from the file '" + resourcesPath + "'; "+ e.getMessage());
+        }
+    }
+
+    /**
      * Creates and init entity for reading data from file of .csv-format
      *
      * @return new CSVReader initialised with the file source
      */
     private CSVReader initCSVReader() throws FileNotFoundException {
-        logger.debug("Creating CSVReader for file [src/main/resources/data/items.csv]");
-        return new CSVReader(new FileReader("src/main/resources/data/items.csv"));
+        logger.debug("Creating CSVReader for file " + resourceBundle.getString("itemsData"));
+        return new CSVReader(new FileReader(resourceBundle.getString("itemsData")));
     }
 
     /**
