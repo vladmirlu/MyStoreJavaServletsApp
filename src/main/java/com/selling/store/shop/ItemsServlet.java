@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Servlet for items retrieving
  */
+@SuppressWarnings("serial")
 @WebServlet("/mystore/shop/items")
 public final class ItemsServlet extends HttpServlet {
 
@@ -41,7 +43,7 @@ public final class ItemsServlet extends HttpServlet {
     }
 
     /**
-     * Retrieves items and forwards them to the shop page
+     * Retrieves items and forwards them as html to the shop page
      *
      * @param request  http servlet request
      * @param response http servlet response
@@ -51,9 +53,22 @@ public final class ItemsServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<Item> items = provider.getItems();
         logger.info("Received items: " + items + " Response status: " + response.getStatus());
-        request.setAttribute("items", items);
-        response.setContentType("application/json");
-        response.getOutputStream().write(new Gson().toJson(items).getBytes());
-        response.getOutputStream().flush();
+        response.setContentType("text/html");
+        String htmlString = "";
+        for (Item item : items) {
+            htmlString += "<tr>\n"
+                    + "<td name='Name' scope='row'>" + item.getName() + "</td>\n"
+                    + "<td name='Vendor code'>" + item.getCode() + "</td>\n"
+                    + "<td name='Price'>" + item.getPrice() + "</td>\n"
+                    + "<td name='Choose'><input type='checkbox' class='items-check'" +
+                    " id='" + item.getCode()
+                    + "' name='" + item.getName()
+                    + "' value='" + item.getPrice() + "'/></td>\n"
+                    + "</tr>\n";
+        }
+        PrintWriter out = response.getWriter();
+        out.println(htmlString);
+        out.flush();
+        out.close();
     }
 }

@@ -12,6 +12,6 @@ public class ApplicationErrorException extends RuntimeException {
      * */
    public ApplicationErrorException(String message){
         super(message);
-        Logger.getLogger(ItemNotFoundException.class).error(message);
+        Logger.getLogger(ApplicationErrorException.class).error(message);
     }
 }

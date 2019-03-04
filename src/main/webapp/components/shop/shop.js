@@ -7,38 +7,27 @@ var apiUrl = 'http://localhost:8080/mystore';
 /**
  * Fetch all existing items
  * */
-$.get(apiUrl + '/shop/items', function (items) {
-    for (var i = 0; i < items.length; i++) {
-        $('#itemsResponse')
-            .append("<tr>")
-            .append($("<td>").append(items[i].name).append("</td>").attr({name: 'Name', scope: "row"}))
-            .append($("<td>").append(items[i].code).append("</td>").attr({name: 'Vendor code'}))
-            .append($("<td>").append(items[i].price).append("</td>").attr({name: 'Price'}))
-            .append($("<td>")
-                .append($('<input>').attr({
-                    type: 'checkbox',
-                    class: 'items-check',
-                    id: items[i].code,
-                    name: items[i].name,
-                    value: items[i].price
-                })).append("</td>").attr({name: 'Choose'}))
-            .append("</tr>");
-    }
+$.get(apiUrl + '/shop/items', function (responseText) {
+    $('#itemsResponse').html('');
+    $('#itemsResponse').html(responseText);
 });
 
 /**
  * Put chosen items into basket
  * */
 function putIntoBasket() {
-    // items = [];
-    var items = [{name: "Test!", price: '0$', code: 11111 }];
+     var items = [];
+     /**
+      * Test data!!! Uncomment to check how it works. This is what was talking about(No file paths, this data exists just here on frontend!!!).
+      * */
+    //items = [{name: "Test!", price: '0$', code: 11111 }];
     $("[class='items-check']").each(function (index, data) {
         if (data.checked) {
             items.push({ name: data.name, price: data.value, code: data.id });
         }
     });
 
-    document.location.href = apiUrl + '/shop/basket?items=' + JSON.stringify(items);
+    document.location.href = window.encodeURI(apiUrl + '/shop/basket?items=' + JSON.stringify(items));
 }
 
 /**
@@ -88,6 +77,6 @@ function buy() {
             console.log(data);
             document.location.href = apiUrl + '/shop/success';
         }).fail(function() {
-        document.location.href = apiUrl + "/shop/failure";
+        document.location.href = apiUrl + '/shop/failure';
     });
 }

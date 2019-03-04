@@ -4,14 +4,14 @@ import com.opencsv.CSVReader;
 import com.selling.store.entity.Item;
 import com.selling.store.exception.ApplicationErrorException;
 import com.selling.store.exception.ItemNotFoundException;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,34 +31,37 @@ public class ItemsValidatorProvider {
     private List<Item> items;
 
     /**
-     * Object to get data from the application properties file
-     */
-    private ResourceBundle resourceBundle;
-
-    /**
-     * Build new file provider and create resource bundle from the properties file
-     */
-    public ItemsValidatorProvider() {
-        String resourcesPath = "src/main/resources/application.properties";
-        try {
-            this.resourceBundle = new PropertyResourceBundle(new FileInputStream(resourcesPath));
-        } catch (MissingResourceException m) {
-            m.printStackTrace();
-            logger.error("Resource is missing: " + resourcesPath + "MissingResourceException occur: " + m.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("IOException occur during reading resources from the file '" + resourcesPath + "'; "+ e.getMessage());
-        }
-    }
-
-    /**
      * Creates and init entity for reading data from file of .csv-format
      *
      * @return new CSVReader initialised with the file source
      */
-    private CSVReader initCSVReader() throws FileNotFoundException {
-        logger.debug("Creating CSVReader for file " + resourceBundle.getString("itemsData"));
-        return new CSVReader(new FileReader(resourceBundle.getString("itemsData")));
+    private CSVReader initCSVReader() {
+        try {
+            logger.debug("Creating CSVReader for file data/items.csv");
+            File dir = new File("data/");
+            if (!dir.exists()) Files.createDirectory(Paths.get(dir.getPath()));
+            File file = new File("data/items." + FilenameUtils.getExtension("items.csv"));
+            logger.debug("Created file: " + file.getAbsolutePath());
+
+            FileInputStream fis = new FileInputStream("webapps/ROOT/WEB-INF/classes/items.csv");
+            FileOutputStream fos = new FileOutputStream(file);
+            int c;
+            while ((c = fis.read()) != -1) {
+                fos.write(c);
+            }
+            fis.close();
+            fos.close();
+            logger.debug("Items data saved into file: " + file.getAbsolutePath());
+            return new CSVReader(new FileReader("data/items.csv"));
+        } catch (FileNotFoundException f) {
+            logger.error("FileNotFoundException appears: " + f.getMessage());
+            f.printStackTrace();
+            throw new ItemNotFoundException("Error! Could not init file data/items.csv. \nFileNotFoundException caught: " + f.getMessage());
+        } catch (IOException e) {
+            logger.error("IOException appears: " + e.getMessage());
+            e.printStackTrace();
+            throw new ApplicationErrorException("Error! Could not init file data/items.csv. \nIOException caught: " + e.getMessage());
+        }
     }
 
     /**

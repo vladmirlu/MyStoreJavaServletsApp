@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Basket page servlet
  */
+@SuppressWarnings("serial")
 @WebServlet("/mystore/shop/basket")
 public class BasketServlet extends HttpServlet {
 
@@ -52,7 +53,7 @@ public class BasketServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List codes = provider.getNonexistentItemCodes(Arrays.asList(request.getParameterValues("codes[]")));
+        List<String> codes = provider.getNonexistentItemCodes(Arrays.asList(request.getParameterValues("codes[]")));
         logger.info("Nonexistent items codes: " + codes + " Response status: " + response.getStatus());
         request.setAttribute("itemGaps", codes);
         response.getOutputStream().write(new Gson().toJson(codes).getBytes());

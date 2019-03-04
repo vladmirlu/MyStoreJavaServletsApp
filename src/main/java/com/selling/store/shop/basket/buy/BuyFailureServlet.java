@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * Buy failure servlet
  * */
+@SuppressWarnings("serial")
 @WebServlet("/mystore/shop/failure")
 public class BuyFailureServlet extends HttpServlet {
 

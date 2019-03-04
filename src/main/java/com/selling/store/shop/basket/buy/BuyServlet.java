@@ -13,6 +13,7 @@ import java.io.IOException;
 /**
  * Object for managing and mapping the pages related to the buy process
  */
+@SuppressWarnings("serial")
 @WebServlet(name = "BuyServlet",
         description = "Buy pages servlet",
         urlPatterns = {"/mystore/buyService", "/mystore/shop/success"})

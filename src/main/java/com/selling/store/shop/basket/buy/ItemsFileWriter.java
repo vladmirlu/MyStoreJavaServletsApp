@@ -7,9 +7,6 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
@@ -25,24 +22,6 @@ public class ItemsFileWriter {
     private final Logger logger = Logger.getLogger(ItemsFileWriter.class);
 
     /**
-     * Object to get data from the application properties file
-     */
-    private ResourceBundle resourceBundle;
-
-    public ItemsFileWriter(){
-        String resourcesPath = "src/main/resources/application.properties";
-        try {
-            this.resourceBundle = new PropertyResourceBundle(new FileInputStream(resourcesPath));
-        } catch (MissingResourceException m) {
-            m.printStackTrace();
-            logger.error("Resource is missing: " + resourcesPath + "MissingResourceException occur: " + m.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("IOException occur during reading resources from the file '" + resourcesPath + "'; "+ e.getMessage());
-        }
-    }
-
-    /**
      * Creates .csv-format file with real time marker, writes items data into this file
      * and sets the status-201 for this response or, sets response status 400, when FileNotFoundException is cached.
      * In case of another exceptions sets the 500 response status.
@@ -55,7 +34,7 @@ public class ItemsFileWriter {
         try {
             String fileName = "order-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd; HH mm ss"));
             logger.debug("Start creating file: " + fileName);
-            File file = new File(resourceBundle.getString("buyDirectory")
+            File file = new File("data/"
                     + fileName + "." + FilenameUtils.getExtension(fileName + ".csv"));
             logger.debug("Created file: " + file.getAbsolutePath());
 
@@ -65,7 +44,9 @@ public class ItemsFileWriter {
                     .append('"').append(item.getCode()).append('"').append(',')
                     .append('"').append(item.getPrice()).append('"').append('\n'));
             logger.debug("Data to write into: " + sb.toString());
-            new FileOutputStream(file).write(sb.toString().getBytes());
+            FileOutputStream fis = new FileOutputStream(file);
+            fis.write(sb.toString().getBytes());
+            fis.close();
             response.setStatus(201);
         } catch (FileNotFoundException e) {
             logger.error("FileNotFoundException cached: " + e.getMessage());

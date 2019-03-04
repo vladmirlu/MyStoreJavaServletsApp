@@ -12,6 +12,7 @@ import java.io.IOException;
 /**
  * Shop page servlet
  * */
+@SuppressWarnings("serial")
 @WebServlet("/mystore/shop")
 public final class ShopServlet extends HttpServlet {
 
