@@ -1,6 +1,5 @@
 package com.selling.store.shop.basket;
 
-import com.google.gson.Gson;
 import com.selling.store.shop.ItemsValidatorProvider;
 import org.apache.log4j.Logger;
 
@@ -56,7 +55,7 @@ public class BasketServlet extends HttpServlet {
         List<String> codes = provider.getNonexistentItemCodes(Arrays.asList(request.getParameterValues("codes[]")));
         logger.info("Nonexistent items codes: " + codes + " Response status: " + response.getStatus());
         request.setAttribute("itemGaps", codes);
-        response.getOutputStream().write(new Gson().toJson(codes).getBytes());
+        response.getOutputStream().write(codes.toString().getBytes());
         response.getOutputStream().flush();
     }
 }

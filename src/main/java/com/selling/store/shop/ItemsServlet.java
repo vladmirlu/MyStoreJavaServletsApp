@@ -1,6 +1,5 @@
 package com.selling.store.shop;
 
-import com.google.gson.Gson;
 import com.selling.store.entity.Item;
 import org.apache.log4j.Logger;
 

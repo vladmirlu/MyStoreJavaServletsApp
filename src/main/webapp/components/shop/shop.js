@@ -18,9 +18,12 @@ $.get(apiUrl + '/shop/items', function (responseText) {
 function putIntoBasket() {
      var items = [];
      /**
-      * Test data!!! Uncomment to check how it works. This is what was talking about(No file paths, this data exists just here on frontend!!!).
+      * Test data!!! Uncomment to check how it works.
+      * This is what was talking about(No file paths, this data exists just here on frontend to check css marking!!!).
+      * Also this is for redirect checking after buy(redirect success or failure html according to the buy result).
       * */
     //items = [{name: "Test!", price: '0$', code: 11111 }];
+
     $("[class='items-check']").each(function (index, data) {
         if (data.checked) {
             items.push({ name: data.name, price: data.value, code: data.id });
