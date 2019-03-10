@@ -16,7 +16,7 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 @WebServlet(name = "BuyServlet",
         description = "Buy pages servlet",
-        urlPatterns = {"/mystore/buyService", "/mystore/shop/success"})
+        urlPatterns = {"/buyService", "/shop/success"})
 public class BuyServlet extends HttpServlet {
 
     /**

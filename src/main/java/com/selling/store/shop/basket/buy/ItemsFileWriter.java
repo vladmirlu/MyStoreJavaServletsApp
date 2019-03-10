@@ -44,9 +44,9 @@ public class ItemsFileWriter {
                     .append('"').append(item.getCode()).append('"').append(',')
                     .append('"').append(item.getPrice()).append('"').append('\n'));
             logger.debug("Data to write into: " + sb.toString());
-            FileOutputStream fis = new FileOutputStream(file);
-            fis.write(sb.toString().getBytes());
-            fis.close();
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(sb.toString().getBytes());
+            fos.close();
             response.setStatus(201);
         } catch (FileNotFoundException e) {
             logger.error("FileNotFoundException cached: " + e.getMessage());

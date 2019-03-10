@@ -41,17 +41,14 @@ public class ItemsValidatorProvider {
             File dir = new File("data/");
             if (!dir.exists()) Files.createDirectory(Paths.get(dir.getPath()));
             File file = new File("data/items." + FilenameUtils.getExtension("items.csv"));
-            logger.debug("Created file: " + file.getAbsolutePath());
-
-            FileInputStream fis = new FileInputStream("webapps/ROOT/WEB-INF/classes/items.csv");
-            FileOutputStream fos = new FileOutputStream(file);
-            int c;
-            while ((c = fis.read()) != -1) {
-                fos.write(c);
+            if(!file.exists()) {
+                Files.createFile(Paths.get(file.getPath()));
+                logger.debug("Created file: " + file.getAbsolutePath());
+                FileOutputStream fos = new FileOutputStream(file);
+                fos.write(generateTestItems().getBytes());
+                fos.close();
+                logger.debug("Items data saved into file: " + file.getAbsolutePath());
             }
-            fis.close();
-            fos.close();
-            logger.debug("Items data saved into file: " + file.getAbsolutePath());
             return new CSVReader(new FileReader("data/items.csv"));
         } catch (FileNotFoundException f) {
             logger.error("FileNotFoundException appears: " + f.getMessage());
@@ -62,6 +59,23 @@ public class ItemsValidatorProvider {
             e.printStackTrace();
             throw new ApplicationErrorException("Error! Could not init file data/items.csv. \nIOException caught: " + e.getMessage());
         }
+    }
+
+    /**
+     * Generate item test collection
+     *
+     * @return item collection as string
+     */
+    private String generateTestItems() {
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            sb.append('"').append("Item").append(i).append('"').append(',')
+                    .append('"').append(random.nextInt(1000)).append('"').append(',')
+                    .append('"').append(random.nextInt(200)).append("$").append('"').append('\n');
+        }
+        logger.debug("Test data to display: " + sb.toString());
+        return sb.toString();
     }
 
     /**

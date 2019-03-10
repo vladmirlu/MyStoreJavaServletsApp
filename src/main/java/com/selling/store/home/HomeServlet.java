@@ -14,7 +14,7 @@ import java.io.IOException;
  * Home page servlet
  */
 @SuppressWarnings("serial")
-@WebServlet("/mystore")
+@WebServlet("")
 public final class HomeServlet extends HttpServlet {
 
     /**
@@ -22,7 +22,7 @@ public final class HomeServlet extends HttpServlet {
      */
     @Override
     public void init() {
-        PropertyConfigurator.configure("WEB-INF/classes/log4j.properties");
+        PropertyConfigurator.configure("log4j.properties");
     }
 
     /**

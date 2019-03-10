@@ -16,7 +16,7 @@
     </properties>
 
     <build>
-        <finalName>ROOT</finalName>
+        <finalName>mystore</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

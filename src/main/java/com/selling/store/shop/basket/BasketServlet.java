@@ -16,7 +16,7 @@ import java.util.List;
  * Basket page servlet
  */
 @SuppressWarnings("serial")
-@WebServlet("/mystore/shop/basket")
+@WebServlet("/shop/basket")
 public class BasketServlet extends HttpServlet {
 
     /**

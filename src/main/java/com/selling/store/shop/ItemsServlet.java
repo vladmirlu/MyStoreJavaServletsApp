@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * Servlet for items retrieving
  */
 @SuppressWarnings("serial")
-@WebServlet("/mystore/shop/items")
+@WebServlet("/shop/items")
 public final class ItemsServlet extends HttpServlet {
 
     /**
