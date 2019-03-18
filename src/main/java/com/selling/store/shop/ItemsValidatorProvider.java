@@ -20,6 +20,10 @@ import java.util.stream.Collectors;
  */
 public class ItemsValidatorProvider {
 
+    public ItemsValidatorProvider(){
+        initItems();
+    }
+
     /**
      * ItemsValidatorProvider logger.
      */

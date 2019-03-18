@@ -1,7 +1,7 @@
 package com.selling.store.home;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+/*import org.apache.log4j.PropertyConfigurator;*/
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,11 +20,11 @@ public final class HomeServlet extends HttpServlet {
     /**
      * Configures the application logging properties with log4j.properties file
      */
-    @Override
+    /*@Override
     public void init() {
-        PropertyConfigurator.configure("log4j.properties");
+        PropertyConfigurator.configure("WEB-INF/classes/log4j.properties");
     }
-
+*/
     /**
      * Forwards to the application home page
      *

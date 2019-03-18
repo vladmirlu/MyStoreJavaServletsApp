@@ -16,28 +16,31 @@ $.get(apiUrl + '/shop/items', function (responseText) {
  * Put chosen items into basket
  * */
 function putIntoBasket() {
-     var items = [];
+    var items = [];
      /**
       * Test data!!! Uncomment to check how it works.
       * This is what was talking about(No file paths, this data exists just here on frontend to check css marking!!!).
       * Also this is for redirect checking after buy(redirect success or failure html according to the buy result).
       * */
-    //items = [{name: "Test!", price: '0$', code: 11111 }];
-
+         items = [{ name: "Test!", price: '0$', code: 11111 }];
+    var count = 1;
+    var itemsAsUri = [];
     $("[class='items-check']").each(function (index, data) {
         if (data.checked) {
             items.push({ name: data.name, price: data.value, code: data.id });
+            itemsAsUri.push('art' + count);
+            count++;
         }
     });
-
-    document.location.href = window.encodeURI(apiUrl + '/shop/basket?items=' + JSON.stringify(items));
+    localStorage.setItem('items', JSON.stringify(items));
+    document.location.href = window.encodeURI(apiUrl + '/shop/basket?items=' + itemsAsUri);
 }
 
 /**
  * Init basket page with items
  * */
 function onBasketLoad() {
-    var items = JSON.parse(window.decodeURI(document.location.href).split('?')[1].split('=')[1]);
+    var items = JSON.parse(localStorage.getItem('items'));
     var codes = [];
     items.forEach(function (item) {
         codes.push(Number(item.code))
